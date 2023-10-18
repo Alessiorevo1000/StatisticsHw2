@@ -1,238 +1,78 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="histogram"></canvas>
 
-<head>
-
-  <style>
-  
-
-    .m{
-      font-size: 0px;
-
-    }
-
-    h3 {
-      font-size: 30px;
-      font-style: italic;
-    }
-    caption{
-      font-size: 30px;
-      font-style: italic;
-    }
-    table {
-      font-size: 15px;
-      border-collapse: collapse;
-      border: 1px solid black;
-      width: 50%;
-      margin-bottom: 20px;
-      
-    }
-    th{
-     color: antiquewhite;
-    }
-
-    th,
-    td {
-      border: 1px solid rgb(125, 7, 7);
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #e80505;
-    }
-    caption{
-      font-size:40px;
-    }
-
-  </style>
-
-</head>
-
-<body class="m">
-  <div id="jointDistributionAmbitiousHeight"></div>
-  <div id="table"></div>
-
-
-
-
-
-  <script>
-    function createFrequencyTable(data) {
-      const frequencyTable = {};
-
-      //creo un dizionario 
-
-      for (const item of data) {
-        if (frequencyTable[item]) {
-          frequencyTable[item]++;
-        } else {
-          frequencyTable[item] = 1;
-        }
-      }
-
-      //numero di dati forniti 
-      const total = data.length;
-
-      //creo altri dizionari
-      const relativeFrequencyTable = {};
-      const percentageFrequencyTable = {};
-
-      //dal dizionario prendo i dati 
-      for (const key in frequencyTable) {
-        const absoluteFrequency = frequencyTable[key];  //prendo le ripetizioni uno alla volta 
-        const relativeFrequency = absoluteFrequency / total;  //relativa = numero di duplicati / il numero di dati
-        const percentageFrequency = (relativeFrequency * 100).toFixed(2) + "%"; //percentuale = relativa perc
-
-        relativeFrequencyTable[key] = relativeFrequency; //dizionario[numero]  = relativa
-        percentageFrequencyTable[key] = percentageFrequency; //dizionario[numero] = percentuale 
-      }
-
-      return { absolute: frequencyTable, relative: relativeFrequencyTable, percentage: percentageFrequencyTable };
-    }
-
-    const ages = [22, 22, 22, 23, 23, 21, 23, 23, 24, 24, 23, 21, 25, 22, 22, 22, 25, 21, 21, 21, "23+", 22, 21, 23, 24, 25, 23, 22, 22, 27, 23, 24, 22, 25, 39, 26, 23, 22, 22, 22, 23, 27, 23, 25, 22, 22, 22, 22, 21, 23, 23, 26, 27, 23, 23, 23, 27];
-    const Hard_work = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 4, 5, 5, 5, 5, 5, 4, 4, 4, 5, 4, 4, 2, 4, 4, 5, 4, 4, 4, 4, 3, 4, 4, 5, 4, 5, 4, 5, 4, 4, 4, 4, 4, 5, 4, 3, 4, 4, 4, 5, 3];
-    const Main_Interests = ["Cybersecurity", "Cybersecurity", "Vulnerability Research", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Malware Analysis", "Cybersecurity", "Cybersecurity", "Cybersecurity (blue team)", "Cybersecurity", "Cybersecurity", "Cybersecurity", "Privacy", "Cybercrime and Forensics", "Cybersecurity, OS development", "Cybersecurity", "Cybersecurity, Networks", "Cybersecurity, Networks", "Cybersecurity", "Computer Science", "Cybersecurity, AI", "Cybersecurity", "Cybersecurity, IT, international studies", "Cybersecurity", "Cybersecurity, AI, Network", "IT", "Management Of Information Security, Data privacy", "Cybersecurity, AI", "climbing", "Cybersecurity", "Cybersecurity, Software testing", "Cybersecurity, Network", "Cybersecurity", "Cybersecurity", "Cybersecurity, Privacy", "Cybersecurity", "Computer science, Cybserscurity, Exploits, Vulnerabilities", "Cybersecurity", "Cybersecurity", "Cybersecurity, AI", "Cybersecurity, operating systems", "Cybersecurity", "Cybersecurity, OS", "Computer science, physics, philosophy", "Cybersecurity, Networks", "Cybersecurity, Entrepreneurship, Network", "Cybersecurity"];
-
-    //ritorna una tripla {assoluta, relativa, percentuale relativa}
-    const ageFrequency = createFrequencyTable(ages);
-    const hardWorkFrequency = createFrequencyTable(Hard_work);
-    const interestFrequency = createFrequencyTable(Main_Interests);
-
-
-
-    const $table = document.getElementById('table');
-    $table.insertAdjacentHTML('afterbegin', jointDistribution(ages, Hard_work, 'jointDistributionAmbitiousHeight'));
-
-   
-    $table.insertAdjacentHTML('afterbegin', createTable(ageFrequency,'Ages'));
-    $table.insertAdjacentHTML('afterbegin', createTable(hardWorkFrequency,'HardWork'));
-    $table.insertAdjacentHTML('afterbegin', createTable(interestFrequency,'Interest'));
-
-
-
-
-
-    function createTableRow(data) {
-    
-      const arr = data.map(e => {
-        
-        return `<td>${e}</td>`;
-      });
-
-      return `<tr>${arr.join('')}</tr>`;
-    }
-
-
-
-    function createTable(data,testo) {
-      let chiave = [];
-      let assoluto = [];
-      let relativo = [];
-      let percentuale = [];
-      for (const key in data.absolute) {
-
-        
-        chiave.push(key);
-        assoluto.push(data.absolute[key]);
-        relativo.push(data.relative[key].toFixed(2));
-        percentuale.push(data.percentage[key]);
-
-      }
-
-
-      //var testo='ok';
-      const tableRows = chiave.map((name, i) => {
-        return createTableRow([name, assoluto[i], relativo[i], percentuale[i]]);
-      });
-      return `
-    
-        <table>
-          result += ' <caption>${testo}</caption>  ';
-          <thead>
-            <tr>
-              <td>Valore</td>
-              <td>assoluta</td>
-              <td>relativa</td>
-              <td>percentuale</td>
-            </tr>
-          </thead>
-          <tbody>
-            ${tableRows.join('')}
-          </tbody>
-        </table>  
-        
-      `;
-
-
-
-    }
-
-
-
-
-    function jointDistribution(array1, array2, outputElementId) {
-      console.log(array1);
-      console.log(array2);
-      let arrayMerge = {};
-      /*
-      for (const x of array1) {
-        for (const y of array2) {
-          const label = "x: " + x + ", y: " + y;
-          arrayMerge[label] = label in arrayMerge ? arrayMerge[label] + 1 : 1;
-        }
-      }
-*/
-for (let index = 0; index < array1.length; index++) {
-
-  for (let j = 0; j < array2.length; j++) {
-    
-
-    var value1 = array1[index];
-        var value2 = array2[j];
-
-        var key = value1 + ',' + value2;
-
-        if (arrayMerge[key]) {
-          arrayMerge[key]++;
-        } else {
-          arrayMerge[key] = 1;
-        }
-    
+    <script>
+      function generateRandomVariates(N, k) {
+        if (N <= 0 || k <= 0) {
+    console.error("N and k must be greater than 0.");
+    return;
   }
-  
-}
 
-    
-     
-  
-      var result = '<h3>Joint Distribution: Age and Hard_work </h3>';
-      result += '<table>';
-      result += '<tr><th>Valore</th><th>Frequenza Congiunta</th><th>Frequenza Relativa Congiunta</th><th>Percentuale Congiunta</th></tr>';
+  const variates = [];
+  const intervalCounts = new Array(k).fill(0);
 
-      for (var key in arrayMerge) {
-        var frequency = arrayMerge[key];
-        var relativeFrequency = frequency / (array1.length+array2.length);
-        var percentage = (relativeFrequency/(array1.length+array2.length) * 100).toFixed(2);
+  for (let i = 0; i < N; i++) {
+    const randomValue = Math.random(); // Generate a random value in [0, 1)
+    const intervalIndex = Math.floor(randomValue * k); // Determine the interval index
 
-        result += '<tr><td>' + key + '</td><td>' + frequency + '</td><td>' + relativeFrequency.toFixed(2) + '</td><td>' + percentage + '%</td></tr>';
+    // Increment the count for the corresponding interval
+    intervalCounts[intervalIndex]++;
+  }
+
+  // Calculate the interval boundaries and frequencies
+  const intervalSize = 1 / k;
+  for (let i = 0; i < k; i++) {
+    const intervalStart = i * intervalSize;
+    const intervalEnd = (i + 1) * intervalSize;
+    const frequency = intervalCounts[i] / N;
+    console.log(`Interval [${intervalStart}, ${intervalEnd}): Frequency = ${frequency}`);
+  }
+
+        return intervalCounts;
       }
 
-      result += '</table>';
+      const N = 1000; // Number of random variates to generate
+      const k = 10;   // Number of class intervals
 
-      document.getElementById(outputElementId).innerHTML = result;
+      const intervalCounts = generateRandomVariates(N, k);
 
+      const intervalLabels = [];
+      for (let i = 0; i < k; i++) {
+        intervalLabels.push(`[${i / k}, ${(i + 1) / k})`);
+      }
 
-    }
-
-
-
-
-
-
-  </script>
-  
-</body>
-
+      const ctx = document.getElementById("histogram").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: intervalLabels,
+          datasets: [
+            {
+              label: "Frequency",
+              data: intervalCounts,
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Frequency",
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
 </html>
