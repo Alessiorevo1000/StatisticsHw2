@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-bottom: 50px;
+        }
+
+        caption {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: xx-large;
+
+
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" id="csvFileInput" accept=".csv" />
+
+    <label for="columnIndex">Enter the column index:</label>
+    <input type="number" id="columnIndex" min="0" />
+    <button onclick="processCSV(0);processCSV(1);processCSV(2);">Extract Data and Calculate Frequencies</button>
+    <div id="output"></div>
+    <div id="tableContainer"></div>
+
+
+    <div id="table-container">
+        <!-- The joint distribution table will be inserted here -->
+    </div>
+
+
+    <script>
+
+
+
+        var save;
+
+
+        function processCSV(scelta) {
+            var bool = false;
+            var fileInput = document.getElementById('csvFileInput');
+            var file = fileInput.files[0];
+
+            var columnIndexInput = document.getElementById('columnIndex');
+
+
+
+            var columnIndex = parseInt(columnIndexInput.value);
+
+            if (scelta == 1) {
+                columnIndex = 16;
+
+
+            }
+            if (scelta == 2) {
+                columnIndex = 4;
+                bool = true;
+            }
+
+            var outputDiv = document.getElementById('output');
+
+
+            if (!file) {
+                outputDiv.innerHTML = 'No file selected.';
+                return;
+            }
+
+            if (isNaN(columnIndex)) {
+                outputDiv.innerHTML = 'Please enter a valid column index.';
+                return;
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+
+
+
+
+
+
+
+
+
+
+                var contents = e.target.result;
+                var lines = contents.split('\n');
+                var columnData = [];
+                var parts = []
+
+                parts.splice(0, parts.length);
+                columnData.splice(0, columnData.length);
+
+                for (let i = 0; i < lines.length; i++) {
+                    var parts = parseCSVLine(lines[i]);
+
+
+                    if (parts.length > columnIndex) {
+                        columnData.push(parts[columnIndex]);
+                    }
+                }
+
+                if (scelta != 0) {
+
+                    columnData.shift();
+
+                    var frequencies = calculateFrequencies(columnData);
+
+
+
+                    var assoluta = frequencies.absolute;
+                    var relativa = frequencies.relative;
+                    var perce = frequencies.percent;
+
+
+
+                    createTableFromObject(assoluta, 0);
+                    createTableFromObject(relativa, 1);
+                    createTableFromObject(perce, 2);
+
+
+                    if (bool == false) {
+
+                        save = relativa;
+
+
+                        for (const key in relativa) {
+                            if (relativa.hasOwnProperty(key)) {
+                                save[key] = relativa[key];
+                            }
+                        }
+                    } else {
+
+
+                        const jointDistribution = computeJointDistribution(save, relativa);
+                        createJointDistributionTable(jointDistribution);
+
+                    }
+
+
+
+
+
+                } else {
+                    // Calculate frequencies selected 
+                    columnData.shift();
+
+                    var frequencies = calculateFrequencies(columnData);
+
+
+
+                    var assoluta = frequencies.absolute;
+                    var relativa = frequencies.relative;
+                    var perce = frequencies.percent;
+
+
+                    createTableFromObject(assoluta, 0);
+                    createTableFromObject(relativa, 1);
+                    createTableFromObject(perce, 2);
+
+                }
+
+
+
+
+                function createTableFromObject(data, c) {
+                    var tableContainer = document.getElementById("tableContainer");
+                    var table = document.createElement("table");
+                    var caption = document.createElement("caption");
+
+
+                    var headerRow = document.createElement("tr");
+
+                    // Creazione delle intestazioni delle colonne
+                    for (var key in data) {
+                        var th = document.createElement("th");
+                        th.textContent = key;
+                        headerRow.appendChild(th);
+                    }
+
+                    var dataRow = document.createElement("tr");
+                    var l = 0;
+                    // Inserimento dei dati nelle colonne
+                    for (var key in data) {
+                        var td = document.createElement("td");
+                        if (c == 2) {
+                            caption.textContent = "Distribuzione Relativa (percentuale)";
+                            td.textContent = Math.round(data[key], 2) + "%";
+                            l += Math.round(data[key], 2);
+                        } else if (c == 1) {
+                            var a;
+                            a = data[key];
+                            caption.textContent = "Distribuzione Relativa (approssimata)";
+                            td.textContent = a.toFixed(3);
+                        } else {
+                            caption.textContent = "Distribuzione Assoluta";
+                            td.textContent = data[key];
+                        }
+                        dataRow.appendChild(td);
+                    }
+
+                    table.appendChild(headerRow);
+                    table.appendChild(dataRow);
+                    table.appendChild(caption);
+                    tableContainer.appendChild(table);
+                }
+
+
+
+            };
+
+            if (file.name.endsWith('.csv')) {
+                reader.readAsText(file);
+            } else {
+                outputDiv.innerHTML = 'Unsupported file format. Please select a CSV file.';
+            }
+        }
+
+        function parseCSVLine(line) {
+            var parts = [];
+            let currentPart = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                var char = line[i];
+
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    parts.push(currentPart);
+                    currentPart = '';
+                } else {
+                    currentPart += char;
+                }
+            }
+
+            parts.push(currentPart);
+            return parts;
+        }
+
+        function calculateFrequencies(data) {
+            var frequencies = {
+                absolute: {},
+                relative: {},
+                percent: {}
+            };
+
+            for (let i = 0; i < data.length; i++) {
+                var value = data[i].toUpperCase().trim();
+
+                if (!frequencies.absolute[value]) {
+                    frequencies.absolute[value] = 0;
+                }
+                frequencies.absolute[value]++;
+            }
+
+            var total = data.length;
+            for (var value in frequencies.absolute) {
+                frequencies.relative[value] = frequencies.absolute[value] / total;
+                frequencies.percent[value] = (frequencies.absolute[value] / total) * 100;
+            }
+
+            return frequencies;
+        }
+
+
+
+        //                      JOINT
+
+
+
+
+
+
+
+
+        function computeJointDistribution(dict1, dict2) {
+            // Initialize an empty dictionary to store the joint distribution.
+            const jointDistribution = {};
+
+            // Loop through the keys and values of the first dictionary.
+            for (const key1 in dict1) {
+                for (const key2 in dict2) {
+                    // Combine the keys from both dictionaries to create a unique joint key.
+                    const jointKey = key1 + ', ' + key2;
+
+                    // Calculate the joint probability by multiplying the probabilities from both dictionaries.
+                    const jointProbability = dict1[key1] * dict2[key2];
+
+                    // Store the joint probability in the joint distribution dictionary.
+                    jointDistribution[jointKey] = jointProbability;
+                }
+            }
+
+            return jointDistribution;
+        }
+
+
+        function createJointDistributionTable(jointDistribution) {
+            const tableContainer = document.getElementById('table-container');
+
+            // Create a table element
+            const table = document.createElement('table');
+
+            // Create the table header row
+            const headerRow = table.insertRow(0);
+            const headerCell1 = headerRow.insertCell(0);
+            const headerCell2 = headerRow.insertCell(1);
+            headerCell1.textContent = 'Joint Key';
+            headerCell2.textContent = 'Joint Probability';
+
+            // Create table rows for each joint key and probability
+            let rowIdx = 1;
+            for (const jointKey in jointDistribution) {
+                const row = table.insertRow(rowIdx);
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                cell1.textContent = jointKey;
+                cell2.textContent = jointDistribution[jointKey];
+                rowIdx++;
+            }
+
+            // Append the table to the container
+            tableContainer.appendChild(table);
+        }
+
+
+
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
