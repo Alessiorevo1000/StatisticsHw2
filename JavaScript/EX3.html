@@ -4,9 +4,21 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
+    <div>
+      <label for="N">Enter N: </label>
+      <input type="number" id="N" value="1000">
+      <br>
+      <label for="k">Enter K: </label>
+      <input type="number" id="k" value="10">
+      <br>
+      <button onclick="updateHistogram()">Generate and Update Histogram</button>
+    </div>
     <canvas id="histogram"></canvas>
 
     <script>
+      let N = 1000; // Default value for N
+      let k = 10;   // Default value for K
+
       function generateRandomVariates(N, k) {
         if (N <= 0 || k <= 0) {
     console.error("N and k must be greater than 0.");
@@ -33,46 +45,56 @@
     console.log(`Interval [${intervalStart}, ${intervalEnd}): Frequency = ${frequency}`);
   }
 
+
         return intervalCounts;
       }
 
-      const N = 1000; // Number of random variates to generate
-      const k = 10;   // Number of class intervals
+      function updateHistogram() {
+        N = parseInt(document.getElementById("N").value);
+        k = parseInt(document.getElementById("k").value);
 
-      const intervalCounts = generateRandomVariates(N, k);
+        const intervalCounts = generateRandomVariates(N, k);
 
-      const intervalLabels = [];
-      for (let i = 0; i < k; i++) {
-        intervalLabels.push(`[${i / k}, ${(i + 1) / k})`);
-      }
+        const intervalLabels = [];
+        for (let i = 0; i < k; i++) {
+          intervalLabels.push(`[${i / k}, ${(i + 1) / k})`);
+        }
 
-      const ctx = document.getElementById("histogram").getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: intervalLabels,
-          datasets: [
-            {
-              label: "Frequency",
-              data: intervalCounts,
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: "Frequency",
+        const ctx = document.getElementById("histogram").getContext("2d");
+        if (window.myChart) {
+          // If the chart already exists, destroy it to prevent duplicates
+          window.myChart.destroy();
+        }
+        window.myChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: intervalLabels,
+            datasets: [
+              {
+                label: "Frequency",
+                data: intervalCounts,
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: "Frequency",
+                },
               },
             },
           },
-        },
-      });
+        });
+      }
+
+      // Initial histogram generation
+      updateHistogram();
     </script>
   </body>
 </html>
