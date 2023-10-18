@@ -12,3 +12,17 @@ C:\Users\Aless\source\repos\RandomDistributionAnalysis\RandomDistributionAnalysi
 C:\Users\Aless\source\repos\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.pdb
 C:\Users\Aless\source\repos\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.genruntimeconfig.cache
 C:\Users\Aless\source\repos\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\ref\RandomDistributionAnalysis.dll
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\bin\Debug\net6.0\RandomDistributionAnalysis.exe
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\bin\Debug\net6.0\RandomDistributionAnalysis.deps.json
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\bin\Debug\net6.0\RandomDistributionAnalysis.runtimeconfig.json
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\bin\Debug\net6.0\RandomDistributionAnalysis.dll
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\bin\Debug\net6.0\RandomDistributionAnalysis.pdb
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.AssemblyInfoInputs.cache
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.AssemblyInfo.cs
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.csproj.CoreCompileInputs.cache
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.dll
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\refint\RandomDistributionAnalysis.dll
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.pdb
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\RandomDistributionAnalysis.genruntimeconfig.cache
+C:\Users\Aless\OneDrive\Documenti\GitHub\StatisticsHw2\C#\RandomDistributionAnalysis\RandomDistributionAnalysis\obj\Debug\net6.0\ref\RandomDistributionAnalysis.dll

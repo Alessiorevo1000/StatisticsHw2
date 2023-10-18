@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Aless\\source\\repos\\RandomDistributionAnalysis\\RandomDistributionAnalysis\\RandomDistributionAnalysis.csproj",
+      "projectUniqueName": "C:\\Users\\Aless\\OneDrive\\Documenti\\GitHub\\StatisticsHw2\\C#\\RandomDistributionAnalysis\\RandomDistributionAnalysis\\RandomDistributionAnalysis.csproj",
       "projectName": "RandomDistributionAnalysis",
-      "projectPath": "C:\\Users\\Aless\\source\\repos\\RandomDistributionAnalysis\\RandomDistributionAnalysis\\RandomDistributionAnalysis.csproj",
+      "projectPath": "C:\\Users\\Aless\\OneDrive\\Documenti\\GitHub\\StatisticsHw2\\C#\\RandomDistributionAnalysis\\RandomDistributionAnalysis\\RandomDistributionAnalysis.csproj",
       "packagesPath": "C:\\Users\\Aless\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Aless\\source\\repos\\RandomDistributionAnalysis\\RandomDistributionAnalysis\\obj\\",
+      "outputPath": "C:\\Users\\Aless\\OneDrive\\Documenti\\GitHub\\StatisticsHw2\\C#\\RandomDistributionAnalysis\\RandomDistributionAnalysis\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Aless\\AppData\\Roaming\\NuGet\\NuGet.Config",
