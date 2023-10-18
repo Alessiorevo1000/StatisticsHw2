@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "Tzaoh858q/7LOA7+qyQIEMe4RExulpw6GiclWC5/vywoxrSa1SDerDefwXjkV5q+u8lZjxkT0ewCZFyl0TVLWA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Aless\\source\\repos\\RandomDistributionAnalysis\\RandomDistributionAnalysis\\RandomDistributionAnalysis.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Aless\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.23\\microsoft.windowsdesktop.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\Aless\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.23\\microsoft.netcore.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\Aless\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.23\\microsoft.aspnetcore.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\Aless\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.23\\microsoft.netcore.app.host.win-x64.6.0.23.nupkg.sha512"
+  ],
+  "logs": []
+}
