@@ -1,79 +1,83 @@
-﻿class Exercise1
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+class Exercise1
 {
-    public static Dictionary<T, int> CalculateAbsoluteFrequency<T>(IEnumerable<T> data)        // send in input a list of data about a specifich column
+    static void Main()
     {
-        Dictionary<T, int> frequency = new Dictionary<T, int>();                        // create a dict
-
-        foreach (T item in data)                                                     // for each item in data 
+        List<string> columns = new List<string>
         {
-            if (frequency.ContainsKey(item))
+            "Age",
+            "Hard Worker (0-5)",
+            "Dream Works"
+        };
+
+        foreach (var column in columns)
+        {
+            var data1 = getColumnData(column);
+            Console.WriteLine($"Compute: {column}");
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Absolute Frequency:");
+            PrintData(CalculateAbsoluteFrequency(data1));
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Relative Frequency:");
+            PrintData(CalculateRelativeFrequency(data1));
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Percentage Frequency:");
+       
+            var a = CalculatePercentageFrequency(data1);
+
+            foreach (var kvp in a)
             {
-                frequency[item]++;
+                Console.WriteLine($"{kvp.Key}: {kvp.Value:F2}%");
             }
-            else
-            {
-                frequency[item] = 1;
-            }
+
+            Console.WriteLine("\n\n\n");
         }
 
-        return frequency;
+        Console.WriteLine("-----------------------------");
+        Console.WriteLine("Joint Distribution:");
+        Console.WriteLine("-----------------------------");
+
+        List<List<string>> data = new List<List<string>>();
+        foreach (var column in columns)
+        {
+            data.Add(getColumnData(column));
+        }
+
+        PrintData(CalculateJointFrequency(data[0], data[1]));
     }
 
-    public static Dictionary<T, double> CalculateRelativeFrequency<T>(IEnumerable<T> data)
+    static Dictionary<T, int> CalculateAbsoluteFrequency<T>(IEnumerable<T> data)
     {
-        Dictionary<T, int> absoluteFrequency = CalculateAbsoluteFrequency(data);
-        Dictionary<T, double> frequency = new Dictionary<T, double>();
+        return data.GroupBy(x => x)
+                   .ToDictionary(group => group.Key, group => group.Count());
+    }
 
+    static Dictionary<T, double> CalculateRelativeFrequency<T>(IEnumerable<T> data)
+    {
         int dataLength = data.Count();
-
-        foreach (var item in absoluteFrequency)
-        {
-            frequency[item.Key] = Math.Round((double)item.Value / dataLength,2);
-        }
-
-        return frequency;
+        var absoluteFrequency = CalculateAbsoluteFrequency(data);
+        return absoluteFrequency.ToDictionary(kvp => kvp.Key, kvp => Math.Round((double)kvp.Value / dataLength, 2));
     }
 
-    public static Dictionary<T, double> CalculatePercentageFrequency<T>(IEnumerable<T> data)
+    static Dictionary<T, double> CalculatePercentageFrequency<T>(IEnumerable<T> data)
     {
-        Dictionary<T, int> absoluteFrequency = CalculateAbsoluteFrequency(data);
-        Dictionary<T, double> frequency = new Dictionary<T, double>();
-
         int dataLength = data.Count();
-
-        foreach (var item in absoluteFrequency)
-        {
-           
-            frequency[item.Key] = Math.Round((double)item.Value / dataLength * 100,2);
-        }
-
-        return frequency;
+        var absoluteFrequency = CalculateAbsoluteFrequency(data);
+        return absoluteFrequency.ToDictionary(kvp => kvp.Key, kvp => Math.Round((double)kvp.Value / dataLength * 100, 2));
     }
 
-    public static Dictionary<string, int> CalculateJointFrequency<T, E>(IEnumerable<T> data1, IEnumerable<E> data2)
+    static Dictionary<string, int> CalculateJointFrequency<T, E>(IEnumerable<T> data1, IEnumerable<E> data2)
     {
-        Dictionary<string, int> frequency = new Dictionary<string, int>();
-
-        foreach (var x in data1)
-        {
-            foreach (var y in data2)
-            {
-                string label = $"x: {x}, y: {y}";
-                if (frequency.ContainsKey(label))
-                {
-                    frequency[label]++;
-                }
-                else
-                {
-                    frequency[label] = 1;
-                }
-            }
-        }
-
-        return frequency;
+        var labels = data1.SelectMany(x => data2, (x, y) => $"x: {x}, y: {y}");
+        return labels.GroupBy(x => x)
+                     .ToDictionary(group => group.Key, group => group.Count());
     }
 
-    public static void PrintData<K, V>(Dictionary<K, V> data)
+    static void PrintData<K, V>(Dictionary<K, V> data)
     {
         foreach (var item in data)
         {
@@ -81,13 +85,12 @@
         }
     }
 
-    public static List<String> getColumnData(String columnName)   // send a string es: hard work
+    static List<string> getColumnData(string columnName)
     {
-        string tsvFileName = "./sheet.tsv";              
-        int targetColumnIndex = -1;                        
-        List<String> results = new List<String>();
+        string tsvFileName = "./sheet.tsv";
+        int targetColumnIndex = -1;
+        List<string> results = new List<string>();
 
-        // Check if the file exists
         if (!File.Exists(tsvFileName))
         {
             Console.WriteLine("File not found.");
@@ -95,77 +98,26 @@
         }
 
         bool isFirstTime = true;
-        // Read the TSV file and extract the desired column
-        using (StreamReader reader = new StreamReader(tsvFileName))            // method for extract data
+
+        using (StreamReader reader = new StreamReader(tsvFileName))
         {
             string line;
-            while ((line = reader.ReadLine()) != null)                      //read from tsv until there is a line
+            while ((line = reader.ReadLine()) != null)
             {
-                List<String> columns = new List<string>(line.Split('\t'));   //remove the \t from each line and insert my data into list 
-               
-                
-                if (isFirstTime)                                                 // i want remopve thiis and seee if the algo run (is a first time)
+                List<string> columns = line.Split('\t').ToList();
+
+                if (isFirstTime)
                 {
-                    targetColumnIndex = columns.IndexOf(columnName);           //set index to number of column when the target is positioned                
-                    isFirstTime = false;                                        //set first time = null 
+                    targetColumnIndex = columns.IndexOf(columnName);
+                    isFirstTime = false;
                 }
-                else
+                else if (targetColumnIndex < columns.Count)
                 {
-                    if (targetColumnIndex < columns.Count)                    //if my index is less to number of comuns do 
-                    {
-                        results.Add(columns[targetColumnIndex]);              // list of stings --> result insert the columns 
-                    }
+                    results.Add(columns[targetColumnIndex]);
                 }
             }
         }
 
         return results;
-    }
-
-    static void Main()
-    {
-
-        List<String> columns = new List<String>();
-        columns.Add("Age");
-        columns.Add("Hard Worker (0-5)");                          // change if you want calculate different coloumns 
-        columns.Add("Dream Works");
-        
-
-        List<List<String>> data = new List<List<string>>();        // i create a matrix         
-
-        foreach (var column in columns)
-        {
-         
-            
-            
-            var d = getColumnData(column);                   // i have a list for any data from my column
-            data.Add(d);                                      // add my list to data 
-            Console.WriteLine("Compute:" + column);
-            Console.WriteLine("-----------------------------");
-            Console.WriteLine("Absolute: ");
-            Console.WriteLine("-----------------------------");
-            PrintData(CalculateAbsoluteFrequency(d));
-            Console.WriteLine("-----------------------------");
-            Console.WriteLine("Relative:");
-            Console.WriteLine("-----------------------------");
-            PrintData(CalculateRelativeFrequency(d));
-            Console.WriteLine("-----------------------------");
-            Console.WriteLine("Percentage");
-            Console.WriteLine("-----------------------------");
-            var intervalLabels = CalculatePercentageFrequency(d);
-          
-
-            foreach (var kvp in intervalLabels)
-            {
-                Console.WriteLine($"{kvp.Key}: {kvp.Value:F2}%");
-            }
-
-            Console.WriteLine("\n\n\n");
-        }
-        Console.WriteLine("-----------------------------");
-        Console.WriteLine("joint distribution:");
-        Console.WriteLine("-----------------------------");
-        var result4 = CalculateJointFrequency(data[0], data[1]);
-        PrintData(result4);
     }
 }
