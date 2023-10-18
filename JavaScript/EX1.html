@@ -31,7 +31,12 @@
     <input type="number" id="columnIndex" min="0" />
     <button onclick="processCSV(0);processCSV(1);processCSV(2);">Extract Data and Calculate Frequencies</button>
     <div id="output"></div>
+
+
+    <div id="titolo"></div>
     <div id="tableContainer"></div>
+
+
 
 
     <div id="table-container">
@@ -112,7 +117,7 @@
 
                 if (scelta != 0) {
 
-                    columnData.shift();
+                    var h=columnData.shift();
 
                     var frequencies = calculateFrequencies(columnData);
 
@@ -123,6 +128,8 @@
                     var perce = frequencies.percent;
 
 
+                   
+                    
 
                     createTableFromObject(assoluta, 0);
                     createTableFromObject(relativa, 1);
@@ -153,16 +160,18 @@
 
                 } else {
                     // Calculate frequencies selected 
-                    columnData.shift();
+                   var h=columnData.shift();
 
                     var frequencies = calculateFrequencies(columnData);
 
-
+                    var outputElement = document.getElementById("titolo");
+                    outputElement.innerText = h;
 
                     var assoluta = frequencies.absolute;
                     var relativa = frequencies.relative;
                     var perce = frequencies.percent;
 
+                   
 
                     createTableFromObject(assoluta, 0);
                     createTableFromObject(relativa, 1);
