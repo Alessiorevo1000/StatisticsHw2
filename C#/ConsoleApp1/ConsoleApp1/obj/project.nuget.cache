@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K9pkZImt2kMAYOxoUmWFLPuEJzIo+DK79t8dN8O5lLDsL1Q0gdppsIPBen6pG4cfJmDnH619xwiQrupecE1oUg==",
+  "dgSpecHash": "EdIeaClO33EEjq9F7wbkiu+/HnQStjAtdH5hyTJDG91tIjssPwdJFJt9ecJYnl8bC4C2NFQ5ldP5sOvUzfSSaA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Aless\\source\\repos\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+  "projectFilePath": "C:\\Users\\Aless\\OneDrive\\Documenti\\GitHub\\StatisticsHw2\\C#\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Aless\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.23\\microsoft.windowsdesktop.app.ref.6.0.23.nupkg.sha512",
     "C:\\Users\\Aless\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.23\\microsoft.netcore.app.ref.6.0.23.nupkg.sha512",

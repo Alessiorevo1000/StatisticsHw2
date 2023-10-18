@@ -28,7 +28,7 @@
 
         foreach (var item in absoluteFrequency)
         {
-            frequency[item.Key] = (double)item.Value / dataLength;
+            frequency[item.Key] = Math.Round((double)item.Value / dataLength,2);
         }
 
         return frequency;
@@ -43,7 +43,8 @@
 
         foreach (var item in absoluteFrequency)
         {
-            frequency[item.Key] = (double)item.Value / dataLength * 100;
+           
+            frequency[item.Key] = Math.Round((double)item.Value / dataLength * 100,2);
         }
 
         return frequency;
@@ -125,30 +126,45 @@
     {
 
         List<String> columns = new List<String>();
+        columns.Add("Age");
         columns.Add("Hard Worker (0-5)");                          // change if you want calculate different coloumns 
         columns.Add("Dream Works");
-        columns.Add("Age");
+        
 
         List<List<String>> data = new List<List<string>>();        // i create a matrix         
 
         foreach (var column in columns)
         {
-            Console.WriteLine(column);
+         
             
             
             var d = getColumnData(column);                   // i have a list for any data from my column
             data.Add(d);                                      // add my list to data 
-            Console.WriteLine("========== " + column + " ==========");
-            Console.WriteLine("---------- absolutee ----------");
+            Console.WriteLine("Compute:" + column);
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Absolute: ");
+            Console.WriteLine("-----------------------------");
             PrintData(CalculateAbsoluteFrequency(d));
-            Console.WriteLine("---------- relative ----------");
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Relative:");
+            Console.WriteLine("-----------------------------");
             PrintData(CalculateRelativeFrequency(d));
-            Console.WriteLine("---------- percentage ----------");
-            PrintData(CalculatePercentageFrequency(d));
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("Percentage");
+            Console.WriteLine("-----------------------------");
+            var intervalLabels = CalculatePercentageFrequency(d);
+          
+
+            foreach (var kvp in intervalLabels)
+            {
+                Console.WriteLine($"{kvp.Key}: {kvp.Value:F2}%");
+            }
+
             Console.WriteLine("\n\n\n");
         }
-       
-        Console.WriteLine("---------- joint distribution ----------");
+        Console.WriteLine("-----------------------------");
+        Console.WriteLine("joint distribution:");
+        Console.WriteLine("-----------------------------");
         var result4 = CalculateJointFrequency(data[0], data[1]);
         PrintData(result4);
     }
